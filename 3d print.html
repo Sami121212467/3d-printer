@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KG to Gram Price Calculator</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    input { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px; width: 100%; font-size: 18px; cursor: pointer; }
+    #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h2>Price Calculator</h2>
+
+<label>Price per 1 KG (in your currency):</label>
+<input type="number" id="priceKg" placeholder="Example: 50">
+
+<label>Weight in grams:</label>
+<input type="number" id="grams" placeholder="Example: 250">
+
+<button onclick="calculate()">Calculate Price</button>
+
+<div id="result"></div>
+
+<script>
+function calculate() {
+  let pricePerKg = parseFloat(document.getElementById("priceKg").value);
+  let grams = parseFloat(document.getElementById("grams").value);
+
+  if (isNaN(pricePerKg) || isNaN(grams)) {
+    document.getElementById("result").innerHTML = "Please enter valid numbers.";
+    return;
+  }
+
+  let cost = (pricePerKg / 1000) * grams;
+  document.getElementById("result").innerHTML = "Total Price: " + cost.toFixed(2);
+}
+</script>
+
+</body>
+</html>
