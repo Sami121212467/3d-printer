@@ -11,84 +11,54 @@
 
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <script type="text/babel" data-type="module" data-presets="env,react,typescript">
+  <script type="text/babel" data-type="module" data-presets="env,react">
 import React, { useState } from "https://esm.sh/react@18.2.0";
 import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
 import { Compass, Map, Award, Users, BookOpen, Clock, CloudSun, ShieldAlert, CheckSquare, Square, MapPin, Coins, Navigation, Calendar, Camera, ChevronRight, Sparkles, CheckCircle2, RefreshCw, Flame, Star, Footprints, ArrowRight, ShieldCheck, Car, Coffee, Smartphone, Heart, Share2, ShoppingBag, Trophy, Plane, Ticket, X, Copy, Check, ExternalLink, MapPinned } from "https://esm.sh/lucide-react@0.468.0?deps=react@18.2.0";
 
-interface Mission {
-id: number;
-chapter: number;
-title: string;
-subtitle: string;
-date: string;
-base: string;
-theme: string;
-difficulty: number;
-adventure: number;
-walking: string;
-budget: string;
-weather: string;
-temp: string;
-backupPlan: string;
-objective: string;
-timeline: { time: string; text: string; details?: string }[];
-packing: string[];
-photoChallenge: string;
-drivingNotes: { distance: string; time: string; difficulty: string; estimate: string };
-budgetBreakdown: { category: string; cost: number }[];
-familyChallenges: { member: string; task: string; role: string }[];
-sideQuest: { title: string; location: string; task: string; reward: string; stars: number };
-stamp: { title: string; icon: string };
-nextPreview: string;
-// Google Map parameters
-routeOrigin: string;
-routeDest: string;
-}
-
 function App() {
-const [activeTab, setActiveTab] = useState<'missions' | 'journey' | 'family' | 'memories'>('missions');
-const [selectedMissionId, setSelectedMissionId] = useState<number>(1); // Start on Day 1 Arrival
-const [isRaining, setIsRaining] = useState<boolean>(false);
-const [day5Option, setDay5Option] = useState<'A' | 'B'>('A');
-const [day10Option, setDay10Option] = useState<'A' | 'B' | 'C' | 'D'>('A');
-const [day14Team, setDay14Team] = useState<'team1' | 'team2'>('team1');
-const [mapMode, setMapMode] = useState<'route' | 'destination'>('route');
+const [activeTab, setActiveTab] = useState('missions');
+const [selectedMissionId, setSelectedMissionId] = useState(1); // Start on Day 1 Arrival
+const [isRaining, setIsRaining] = useState(false);
+const [day5Option, setDay5Option] = useState('A');
+const [day10Option, setDay10Option] = useState('A');
+const [day14Team, setDay14Team] = useState('team1');
+const [mapMode, setMapMode] = useState('route');
 
 // Interactive Digital Wallet states
-const [isWalletOpen, setIsWalletOpen] = useState<boolean>(false);
-const [selectedPass, setSelectedPass] = useState<number>(0);
-const [activeFlightTab, setActiveFlightTab] = useState<'outbound' | 'inbound'>('outbound');
-const [copiedPNR, setCopiedPNR] = useState<boolean>(false);
+const [isWalletOpen, setIsWalletOpen] = useState(false);
+const [selectedPass, setSelectedPass] = useState(0);
+const [activeFlightTab, setActiveFlightTab] = useState('outbound');
+const [copiedPNR, setCopiedPNR] = useState(false);
 
 // Pack check and challenge states
-const [packingChecked, setPackingChecked] = useState<Record<string, boolean>>({});
-const [challengesCompleted, setChallengesCompleted] = useState<Record<string, boolean>>({});
+const [packingChecked, setPackingChecked] = useState({});
+const [challengesCompleted, setChallengesCompleted] = useState({});
 
 // Journal memory states
-const [stepsWalked, setStepsWalked] = useState<Record<number, string>>({
+const [stepsWalked, setStepsWalked] = useState({
 1: '3,200', 2: '11,400', 3: '13,500', 4: '12,100', 5: '9,850',
 6: '4,500', 7: '14,200', 8: '10,900', 9: '8,400', 10: '11,500',
 11: '7,200', 12: '21,300', 13: '16,400', 14: '12,800', 15: ''
 });
-const [moneySpent, setMoneySpent] = useState<Record<number, string>>({
+const [moneySpent, setMoneySpent] = useState({
 1: '165', 2: '290', 3: '335', 4: '260', 5: '290',
 6: '310', 7: '440', 8: '420', 9: '290', 10: '240',
 11: '210', 12: '380', 13: '240', 14: '410', 15: ''
 });
-const [todaysHero, setTodaysHero] = useState<Record<number, string>>({
+const [todaysHero, setTodaysHero] = useState({
 1: 'Maher', 2: 'Sahar', 3: 'Sami', 4: 'Gina', 5: 'Jood',
 6: 'Maher', 7: 'Sahar', 8: 'Sami', 9: 'Gina', 10: 'Jood',
 11: 'Maher', 12: 'Sami', 13: 'Sahar', 14: 'Gina', 15: ''
 });
-const [bestMeal, setBestMeal] = useState<Record<number, string>>({
+const [bestMeal, setBestMeal] = useState({
 1: 'Schnitzel beside Chiemsee', 2: 'Smoked Trout on Fraueninsel', 3: 'Salzburg Kaiserschmarrn',
 4: 'Viktualienmarkt Pretzels', 5: 'Innsbruck Skillet Hash', 6: 'Lakeside grilled fish',
 7: 'Bubbling Swiss Cheese Fondue', 8: 'Alpine Burgers near Mt. Eiger', 9: 'Old Town Lucerne Pastries',
 10: 'Lauterbrunnen Swiss Raclette', 11: 'Casually grilled lakeside sausage', 12: 'Europa-Park FoodLoop Loop-Meal',
 13: 'Balthasar Castle Dinner', 14: 'Wertheim Riverfront Roast beef', 15: ''
 });
-const [funniestMoment, setFunniestMoment] = useState<Record<number, string>>({
+const [funniestMoment, setFunniestMoment] = useState({
 1: 'Sami copying the high-speed Autobahn speeders', 2: 'Jood rating the gelato 11 out of 10',
 3: 'Maher shrieking on the high wooden miner slide', 4: 'English Garden river surfer wipeouts',
 5: 'Sami chasing high-altitude mountain birds', 6: 'First taste of Swiss water price shock',
@@ -96,7 +66,7 @@ const [funniestMoment, setFunniestMoment] = useState<Record<number, string>>({
 9: 'Rigi cogwheel conductor checking oversized bags', 10: 'Lindt chocolate fountain tasting race',
 11: 'Sami splashing near Rhine Falls middle rock', 12: 'Sami dragging Dad onto Voltron coaster', 13: 'Slow-motion video of loop reactions', 14: 'Sami listing 100 historical aircraft facts', 15: ''
 });
-const [savedLogs, setSavedLogs] = useState<Record<number, boolean>>({
+const [savedLogs, setSavedLogs] = useState({
 1: true, 2: true, 3: true, 4: true, 5: true,
 6: true, 7: true, 8: true, 9: true, 10: true,
 11: true, 12: true, 13: true, 14: true, 15: false
@@ -110,7 +80,7 @@ const passengers = [
 { name: "ELISSAOUI/SAMI", ref: "Child / Spotter Officer", avatar: "👦🐎", seat: "12E" }
 ];
 
-const missions: Mission[] = [
+const missions = [
 {
 id: 1,
 chapter: 1,
@@ -907,15 +877,15 @@ routeDest: "Frankfurt+Airport,Germany"
 
 const currentMission = missions.find(m => m.id === selectedMissionId) || missions[0];
 
-const togglePacking = (key: string) => {
+const togglePacking = (key) => {
 setPackingChecked(prev => ({ ...prev, [key]: !prev[key] }));
 };
 
-const toggleChallenge = (key: string) => {
+const toggleChallenge = (key) => {
 setChallengesCompleted(prev => ({ ...prev, [key]: !prev[key] }));
 };
 
-const handleSaveLog = (id: number) => {
+const handleSaveLog = (id) => {
 setSavedLogs(prev => ({ ...prev, [id]: true }));
 };
 
